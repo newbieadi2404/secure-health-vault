@@ -1,0 +1,56 @@
+# ========================
+# Environment / Secrets
+# ========================
+.env
+
+# ========================
+# Python
+# ========================
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual Environment
+.venv/
+
+# ========================
+# Logs / Temp
+# ========================
+*.log
+*.tmp
+*.bin
+
+# ========================
+# Crypto Keys (CRITICAL)
+# ========================
+keys/
+recipient_keys/
+signing_keys/
+
+# ========================
+# Runtime / Generated Data
+# ========================
+uploads/
+outbox/
+secure_payload.json
+encrypted_record.json
+audit.log
+categorized_logs/
+
+# ========================
+# Data files (IMPORTANT)
+# ========================
+data/*.json
+backend/*.json
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+
+# ========================
+# OS Junk
+# ========================
+.DS_Store
+Thumbs.db

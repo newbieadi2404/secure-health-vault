@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Receive Secure Payload - Secure Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Receive Payload{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Dashboard
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h2>Receive Secure Payload</h2>
+        <p>Receive and verify encrypted healthcare emails with digital signature validation.</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        Receive & Verify Payload
+    </h3>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">Upload the encrypted payload file (.json) received via email and provide your details to decrypt and verify.</p>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="payload_file">Encrypted Payload (.json / .bin)</label>
+            <input type="file" id="payload_file" name="payload_file" accept=".json,.bin" required class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="email">Your Email Address</label>
+            <input type="email" id="email" name="email" value="{{ session.get('user', '') }}@healthcrypto.com" required class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="role">Your Role</label>
+            <select id="role" name="role" required class="form-select">
+                <option value="doctor" {% if session.get('role') == 'doctor' %}selected{% endif %}>Doctor</option>
+                <option value="nurse" {% if session.get('role') == 'nurse' %}selected{% endif %}>Nurse</option>
+                <option value="admin" {% if session.get('role') == 'admin' %}selected{% endif %}>Admin</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="max-width: 320px; margin: 12px auto 0; display: flex;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/></svg>
+            Decrypt & Verify
+        </button>
+    </form>
+</div>
+
+{% if decrypted %}
+<div class="card" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.04);">
+    <h3 class="card-title" style="color: var(--success);">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+        Decrypted Content
+    </h3>
+    <div style="margin-top: 16px;">
+        {% if decrypted_data.package_type == 'medical_image' %}
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: var(--radius-md); border: 1px solid rgba(16, 185, 129, 0.2);">
+                <h4 style="color: var(--primary-light); margin-bottom: 14px; font-size: 0.95em;">🖼️ Medical Image Package</h4>
+
+                {% if decrypted_data.is_emergency %}
+                <div style="background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 14px; color: #fb7185; font-weight: 700; text-align: center; font-size: 0.9em;">
+                    🚨 EMERGENCY / HIGH PRIORITY
+                </div>
+                {% endif %}
+
+                <div class="info-row"><span class="info-label">Patient Name</span><span class="info-value" style="color: var(--accent);">{{ decrypted_data.patient_name }}</span></div>
+                <div class="info-row"><span class="info-label">Filename</span><span class="info-value">{{ decrypted_data.filename }}</span></div>
+                <div class="info-row"><span class="info-label">Doctor</span><span class="info-value">{{ decrypted_data.doctor }}</span></div>
+                <div class="info-row"><span class="info-label">Timestamp</span><span class="info-value">{{ decrypted_data.timestamp }}</span></div>
+                <div class="info-row"><span class="info-label">Key ID</span><span class="info-value" style="font-family: monospace; font-size: 0.85em;">{{ decrypted_data.key_id }}</span></div>
+
+                {% if decrypted_data.message %}
+                <div style="margin-top: 14px; padding: 14px; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border-left: 3px solid var(--primary);">
+                    <strong style="display: block; color: var(--primary-light); margin-bottom: 4px; font-size: 0.78em; text-transform: uppercase;">Clinical Notes</strong>
+                    <div style="color: var(--text-primary); line-height: 1.5; font-size: 0.9em;">{{ decrypted_data.message }}</div>
+                </div>
+                {% endif %}
+
+                {% if image_package %}
+                <div style="margin-top: 20px; text-align: center;">
+                    <h4 style="color: var(--primary-light); margin-bottom: 12px; font-size: 0.9em;">Restored Medical Image</h4>
+                    <img src="data:{{ image_package.mime_type }};base64,{{ image_package.image_data }}"
+                         alt="Decrypted Medical Image"
+                         style="max-width: 100%; border-radius: var(--radius-md); border: 2px solid rgba(16, 185, 129, 0.25); box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);">
+                </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: var(--radius-md); border: 1px solid rgba(16, 185, 129, 0.2);">
+                <h4 style="color: var(--primary-light); margin-bottom: 14px; font-size: 0.95em;">📋 Decrypted Secure Communication (RBAC: {{ role }})</h4>
+                <div style="display: grid; gap: 12px;">
+                    {% for key, value in decrypted_data.items() %}
+                        {% if key != 'image_data' %}
+                        <div class="info-row">
+                            <span class="info-label">{{ key|replace('_', ' ')|title }}</span>
+                            <span class="info-value" style="white-space: pre-wrap;">{{ value }}</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if decrypted_data.image_data %}
+                    <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px; text-align: center;">
+                        <span style="display: block; font-size: 0.78em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">📎 Image Attachment</span>
+                        <img src="data:image/png;base64,{{ decrypted_data.image_data }}"
+                             alt="Decrypted Attachment"
+                             style="max-width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                        {% if decrypted_data.image_filename %}
+                            <p style="font-size: 0.78em; color: var(--text-muted); margin-top: 6px;">File: {{ decrypted_data.image_filename }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

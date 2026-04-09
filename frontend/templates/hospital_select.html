@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Hospital - Secure Healthcare Crypto System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-light: #38bdf8;
+            --accent: #06d6a0;
+            --bg-deep: #0b0f1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(14, 165, 233, 0.4);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            min-height: 100vh;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(14, 165, 233, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(6, 214, 160, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .selection-box {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 44px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.25);
+        }
+
+        .header-icon svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.92em;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 20px;
+            color: var(--primary-light);
+            font-size: 0.82em;
+            font-weight: 600;
+            margin-bottom: 28px;
+        }
+
+        .user-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        .hospital-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .hospital-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hospital-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(14, 165, 233, 0.25);
+            transform: translateX(4px);
+        }
+
+        .hospital-card.selected {
+            border-color: var(--accent);
+            background: rgba(6, 214, 160, 0.06);
+            box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.1);
+        }
+
+        .hospital-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: rgba(14, 165, 233, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hospital-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-light);
+        }
+
+        .hospital-card.selected .hospital-icon {
+            background: rgba(6, 214, 160, 0.15);
+        }
+
+        .hospital-card.selected .hospital-icon svg {
+            color: var(--accent);
+        }
+
+        .hospital-info {
+            flex: 1;
+        }
+
+        .hospital-info h3 {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .hospital-info p {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .hospital-info .phone {
+            margin-top: 4px;
+            font-size: 0.78em;
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .hospital-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .hospital-card.selected .hospital-check {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .hospital-card.selected .hospital-check::after {
+            content: '✓';
+            color: white;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+
+        .btn-continue {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary), #0284c7);
+            color: white;
+            font-size: 0.95em;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-continue:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        }
+
+        .btn-continue:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88em;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .btn-back:hover { color: var(--primary-light); }
+
+        .flash-messages { margin-bottom: 20px; }
+
+        .flash {
+            padding: 13px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 0.88em;
+            font-weight: 500;
+        }
+
+        .flash.error {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            color: #fb7185;
+        }
+
+        .flash.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #34d399;
+        }
+
+        @media (max-width: 480px) {
+            .selection-box { padding: 28px 20px; }
+            .header h1 { font-size: 1.3em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="selection-box">
+            <div class="header">
+                <div class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <h1>Select Your Hospital</h1>
+                <p>Choose a facility to connect to the secure network</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div style="text-align: center;">
+                <div class="user-badge">
+                    <div class="dot"></div>
+                    Authenticated as {{ session.get('role', 'User')|upper }}
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('select_hospital') }}" id="hospitalForm">
+                <input type="hidden" name="hospital_id" id="hospitalId" value="">
+
+                <div class="hospital-grid">
+                    {% for hospital in hospitals.values() %}
+                    <div class="hospital-card" onclick="selectHospital(this, '{{ hospital.id }}')">
+                        <div class="hospital-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg>
+                        </div>
+                        <div class="hospital-info">
+                            <h3>{{ hospital.name }}</h3>
+                            <p>{{ hospital.address }}</p>
+                            <div class="phone">{{ hospital.phone }}</div>
+                        </div>
+                        <div class="hospital-check"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="button" class="btn-continue" id="continueBtn"
+                    onclick="document.getElementById('hospitalId').value = selectedHospital; submitSelection()" disabled>
+                    Continue to Dashboard
+                </button>
+            </form>
+
+            <a href="{{ url_for('logout') }}" class="btn-back">← Sign out</a>
+        </div>
+    </div>
+
+    <script>
+        let selectedHospital = null;
+
+        function selectHospital(card, hospitalId) {
+            document.querySelectorAll('.hospital-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedHospital = hospitalId;
+            document.getElementById('continueBtn').disabled = false;
+        }
+
+        function submitSelection() {
+            if (selectedHospital) {
+                document.getElementById('hospitalForm').submit();
+            }
+        }
+    </script>
+</body>
+</html>

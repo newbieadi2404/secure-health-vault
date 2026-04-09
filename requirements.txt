@@ -1,0 +1,9 @@
+flask
+numpy
+pillow
+pydicom
+pycryptodome
+python-dotenv
+matplotlib
+seaborn
+scikit-image

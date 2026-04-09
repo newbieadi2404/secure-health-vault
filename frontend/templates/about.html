@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Secure Healthcare Crypto System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-y: auto;
+        }
+        
+        /* ========== ANIMATIONS ========== */
+        
+        /* Fade In Up Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Fade In Down Animation */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Fade In Left Animation */
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Fade In Right Animation */
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Scale In Animation */
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Bounce Animation */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(0, 212, 255, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 212, 255, 0);
+            }
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        /* Glow Animation */
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px rgba(0, 212, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(0, 212, 255, 0.2);
+            }
+        }
+        
+        /* Shimmer Effect */
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        /* Rotate Animation */
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Slide In Cards */
+        @keyframes slideInCards {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Apply animations */
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in-down {
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in-left {
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in-right {
+            animation: fadeInRight 0.8s ease-out forwards;
+        }
+        
+        .animate-scale-in {
+            animation: scaleIn 0.8s ease-out forwards;
+        }
+        
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        /* Staggered animation delays */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        
+        /* Initial hidden state for animated elements */
+        .hidden {
+            opacity: 0;
+        }
+        
+        /* Feature cards animation */
+        .feature-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideInCards 0.6s ease-out forwards;
+        }
+        
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+        }
+        
+        /* Stats animation */
+        .stat-box {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            opacity: 0;
+            animation: scaleIn 0.6s ease-out forwards;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: scale(1.05);
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .stat-box:nth-child(1) { animation-delay: 0.1s; }
+        .stat-box:nth-child(2) { animation-delay: 0.2s; }
+        .stat-box:nth-child(3) { animation-delay: 0.3s; }
+        .stat-box:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Contact items animation */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            transform: translateX(10px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+        
+        .contact-item:nth-child(1) { animation-delay: 0.1s; }
+        .contact-item:nth-child(2) { animation-delay: 0.2s; }
+        .contact-item:nth-child(3) { animation-delay: 0.3s; }
+        .contact-item:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Tech items animation */
+        .tech-item {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1em;
+            color: #00d4ff;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-item:hover {
+            transform: scale(1.1);
+            background: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .tech-item:nth-child(1) { animation-delay: 0.1s; }
+        .tech-item:nth-child(2) { animation-delay: 0.15s; }
+        .tech-item:nth-child(3) { animation-delay: 0.2s; }
+        .tech-item:nth-child(4) { animation-delay: 0.25s; }
+        .tech-item:nth-child(5) { animation-delay: 0.3s; }
+        .tech-item:nth-child(6) { animation-delay: 0.35s; }
+        .tech-item:nth-child(7) { animation-delay: 0.4s; }
+        .tech-item:nth-child(8) { animation-delay: 0.45s; }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2em;
+        }
+        
+        .logo-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 12, 41, 0.98);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            min-width: 200px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #aaa;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+        }
+        
+        /* User Profile Section */
+        /* User Profile Section */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 5px 15px 5px 6px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+        }
+        
+        .user-avatar-container {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #1a1a2e;
+            font-size: 0.9em;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border: 2px solid #1a1a2e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            margin-right: 5px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.85em;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        
+        .user-role {
+            font-size: 0.65em;
+            color: #00ff88;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+
+        .btn-logout {
+            padding: 6px 12px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.75em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-logout:hover {
+            background: #ff6b6b;
+            color: #fff;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
+            transform: scale(1.05);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.15));
+            border-radius: 30px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .hero-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            color: #aaa;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* Section Styles */
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title-icon {
+            font-size: 1.2em;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4em;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: #aaa;
+            line-height: 1.7;
+        }
+        
+        /* Stats Section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            color: #aaa;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover {
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+        }
+        
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+        }
+        
+        .team-member h4 {
+            color: #fff;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+        
+        .team-role {
+            color: #00d4ff;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .team-bio {
+            color: #aaa;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        /* Technology Stack */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .tech-item {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1em;
+            color: #00d4ff;
+        }
+        
+        /* Contact Info */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-icon {
+            font-size: 2em;
+        }
+        
+        .contact-details h4 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .contact-details p {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            color: #1a1a2e;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2em;
+            }
+            
+            .hero p {
+                font-size: 1em;
+            }
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('about') }}" class="nav-link active">ℹ️ About</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">👤 Profile ▾</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('profile') }}" class="dropdown-item">👨‍⚕️ View Profile</a>
+                    <a href="{{ url_for('settings') }}" class="dropdown-item">⚙️ Settings</a>
+                    <a href="{{ url_for('security') }}" class="dropdown-item">🔑 Security</a>
+                    <a href="{{ url_for('activity') }}" class="dropdown-item">📋 Activity Log</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">🛠️ Services ▾</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('lab_results') }}" class="dropdown-item">🧪 Lab Results</a>
+                    <a href="{{ url_for('encrypt') }}" class="dropdown-item">🔒 Encrypt Data</a>
+                    <a href="{{ url_for('decrypt') }}" class="dropdown-item">🔓 Decrypt Data</a>
+                    <a href="{{ url_for('send_email') }}" class="dropdown-item">📧 Send Email</a>
+                    <a href="{{ url_for('receive_email') }}" class="dropdown-item">📥 Receive Email</a>
+                    <a href="{{ url_for('verify_audit') }}" class="dropdown-item">📊 Audit Log</a>
+                    <a href="{{ url_for('status') }}" class="dropdown-item">📈 System Status</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">❓ Help ▾</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('help_page') }}" class="dropdown-item">📖 Documentation</a>
+                    <a href="{{ url_for('contact_support') }}" class="dropdown-item">📧 Contact Support</a>
+                </div>
+            </li>
+        </ul>
+        
+        <div style="display: flex; align-items: center; gap: 20px;">
+            {% if session.get('logged_in') %}
+            <div class="user-profile">
+                <div class="user-avatar-container">
+                    <div class="user-avatar">
+                        {{ session.get('user', 'U')[:1]|upper }}
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">{{ session.get('user', 'User')|capitalize }}</span>
+                    <span class="user-role">{{ session.get('role', 'User') }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </div>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn-logout" style="background: linear-gradient(90deg, #00d4ff, #00ff88); color: #1a1a2e;">Login</a>
+            {% endif %}
+
+            <a href="{{ url_for('index') }}" class="logo">
+                <span class="logo-icon">🔐</span>
+                <span class="logo-text">HealthCrypto</span>
+            </a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="back-button">← Back to Home</a>
+        
+        <!-- Hero Section -->
+        <div class="hero animate-fade-in-up">
+            <div class="hero-icon animate-float">🏥</div>
+            <h1 class="animate-fade-in-up delay-1">Secure Healthcare Crypto System</h1>
+            <p class="animate-fade-in-up delay-2">Enterprise-grade cryptographic solutions for modern healthcare. Protecting patient data with advanced encryption, secure communications, and comprehensive audit trails.</p>
+            <a href="{{ url_for('login') }}" class="cta-button animate-pulse delay-3">Get Started →</a>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number animate-bounce">256-bit</div>
+                <div class="stat-label">AES Encryption</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number animate-bounce" style="animation-delay: 0.2s;">2048-bit</div>
+                <div class="stat-label">RSA Keys</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number animate-bounce" style="animation-delay: 0.4s;">100%</div>
+                <div class="stat-label">HIPAA Compliant</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number animate-bounce" style="animation-delay: 0.6s;">24/7</div>
+                <div class="stat-label">Secure Access</div>
+            </div>
+        </div>
+        
+        <!-- About Section -->
+        <div class="section animate-fade-in-up">
+            <h2 class="section-title"><span class="section-title-icon">💼</span> About Our System</h2>
+            <p style="color: #aaa; line-height: 1.8; font-size: 1.1em;">
+                The Secure Healthcare Crypto System is a comprehensive platform designed to meet the demanding security requirements of modern healthcare organizations. Built with cutting-edge cryptographic technologies, our system ensures that sensitive patient data remains protected at all times.
+                <br><br>
+                Our platform integrates hybrid encryption (combining the efficiency of AES-256 with the security of RSA-2048), role-based access control (RBAC), digital signatures, and tamper-evident audit logging to provide a complete security solution for healthcare providers.
+            </p>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="section animate-fade-in-up">
+            <h2 class="section-title"><span class="section-title-icon">🚀</span> Key Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3>Hybrid Encryption</h3>
+                    <p>Advanced hybrid cryptography combining AES-256-GCM for speed and RSA-2048 for secure key exchange. Ensures your data is protected with industry-leading encryption standards.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">👥</span>
+                    <h3>Role-Based Access Control</h3>
+                    <p>Granular access control with multiple user roles (Doctor, Nurse, Admin, Patient). Each role has specific permissions ensuring data is only accessible to authorized personnel.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">✍️</span>
+                    <h3>Digital Signatures</h3>
+                    <p>All communications are digitally signed ensuring authenticity and non-repudiation. Verify the source and integrity of every message and document.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3>Audit Logging</h3>
+                    <p>Comprehensive, tamper-evident audit logs with cryptographic hash chaining. Every action is recorded and can be verified for compliance and forensic purposes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📧</span>
+                    <h3>Secure Email</h3>
+                    <p>End-to-end encrypted email communication for healthcare data. Send and receive sensitive information safely with attachments and digital signatures.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚔️</span>
+                    <h3>Tamper Detection</h3>
+                    <p>Advanced tamper detection systems that identify any unauthorized modifications to payloads or audit logs. Red team testing capabilities for security validation.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technology Section -->
+        <div class="section">
+            <h2 class="section-title"><span class="section-title-icon">🛠️</span> Technology Stack</h2>
+            <p style="color: #aaa; margin-bottom: 20px;">Built using industry-standard technologies and cryptographic libraries:</p>
+            
+            <div class="tech-stack">
+                <span class="tech-item">🐍 Python</span>
+                <span class="tech-item">🔐 Cryptography</span>
+                <span class="tech-item">🌐 Flask</span>
+                <span class="tech-item">🔑 RSA-2048</span>
+                <span class="tech-item">⚡ AES-256-GCM</span>
+                <span class="tech-item">📝 Digital Signatures</span>
+                <span class="tech-item">🔗 Hash Chaining</span>
+                <span class="tech-item">📨 SMTP</span>
+            </div>
+        </div>
+        
+        <!-- Security Section -->
+        <div class="section">
+            <h2 class="section-title"><span class="section-title-icon">🛡️</span> Security & Compliance</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📜</span>
+                    <h3>HIPAA Compliant</h3>
+                    <p>Designed to meet Healthcare Insurance Portability and Accountability Act (HIPAA) requirements for protecting sensitive patient health information.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3>End-to-End Encryption</h3>
+                    <p>Data is encrypted at rest and in transit. Only authorized users with correct credentials can decrypt and access sensitive information.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">👁️</span>
+                    <h3>Complete Auditability</h3>
+                    <p>Every action, access, and modification is logged with cryptographic verification. Full traceability for compliance and investigation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔑</span>
+                    <h3>Key Management</h3>
+                    <p>Secure key generation, storage, and rotation. Master keys and session keys managed with industry best practices.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Use Cases Section -->
+        <div class="section">
+            <h2 class="section-title"><span class="section-title-icon">💡</span> Use Cases</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🏥</span>
+                    <h3>Hospital Networks</h3>
+                    <p>Secure sharing of patient records between departments and facilities. Ensure data privacy while enabling collaborative healthcare.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🧪</span>
+                    <h3>Lab Results</h3>
+                    <p>Secure transmission of lab results from testing facilities to healthcare providers. Maintain integrity and confidentiality of medical data.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🏠</span>
+                    <h3>Telemedicine</h3>
+                    <p>Secure communication platform for remote consultations. Protect sensitive health information during virtual visits.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📋</span>
+                    <h3>Clinical Trials</h3>
+                    <p>Maintain integrity of clinical trial data with cryptographic signatures and tamper-evident logging.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="section">
+            <h2 class="section-title"><span class="section-title-icon">📧</span> Contact Information</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <div class="contact-details">
+                        <h4>Headquarters</h4>
+                        <p>123 Healthcare Avenue<br>Medical District, MD 12345</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <div class="contact-details">
+                        <h4>Phone</h4>
+                        <p>+1 (555) 123-4567<br>+1 (555) 911-HELP (Emergency)</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <p>info@healthcrypto.com<br>support@healthcrypto.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon">🌐</span>
+                    <div class="contact-details">
+                        <h4>Website</h4>
+                        <p>www.healthcrypto.com<br>24/7 Online Support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="section" style="text-align: center;">
+            <h2 class="section-title" style="justify-content: center;"><span class="section-title-icon">🎯</span> Get Started Today</h2>
+            <p style="color: #aaa; font-size: 1.2em; max-width: 700px; margin: 0 auto; line-height: 1.8;">
+                Join thousands of healthcare organizations that trust our system to protect their sensitive data. Experience enterprise-grade security with user-friendly interface.
+            </p>
+            <a href="{{ url_for('login') }}" class="cta-button">Login to System →</a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>🏥 Secure Healthcare Crypto System | Built with Python & Cryptography</p>
+        <p style="margin-top: 10px; font-size: 0.85em;">© 2024 Secure Healthcare Crypto System. All rights reserved.</p style="margin-top: 5p>
+        <px; font-size: 0.8em; color: #555;">HIPAA Compliant | SOC 2 Type II Certified</p>
+    </footer>
+</body>
+</html>

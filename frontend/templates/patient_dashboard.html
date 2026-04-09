@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard - Secure Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Patient Dashboard{% endblock %}
+
+{% block extra_css %}
+    .pd-welcome { background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(6, 214, 160, 0.05)); border: 1px solid rgba(14, 165, 233, 0.12); border-radius: var(--radius-xl); padding: 28px 32px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .pd-welcome h2 { font-size: 1.4em; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .pd-welcome p { color: var(--text-secondary); font-size: 0.9em; }
+    .pd-id-badge { padding: 6px 14px; background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: var(--radius-sm); font-family: monospace; font-size: 0.88em; color: var(--primary-light); font-weight: 600; }
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+    @media (max-width: 768px) { .overview-grid { grid-template-columns: 1fr; } }
+    .overview-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px; }
+    .overview-card h3 { font-size: 0.95em; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; }
+    .overview-stats { display: flex; justify-content: space-around; text-align: center; }
+    .overview-stats .os-val { font-size: 1.6em; font-weight: 800; }
+    .overview-stats .os-label { font-size: 0.78em; color: var(--text-muted); }
+    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .quick-actions .btn { font-size: 0.82em; padding: 10px; text-align: center; text-decoration: none; }
+    .pd-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 28px; }
+    .pd-service { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; text-decoration: none; color: inherit; transition: all 0.25s ease; }
+    .pd-service:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+    .pd-service .svc-icon { font-size: 1.5em; margin-bottom: 10px; display: block; }
+    .pd-service h4 { font-size: 0.88em; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .pd-service p { font-size: 0.78em; color: var(--text-muted); }
+    .record-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px; margin-bottom: 16px; }
+    .record-card h3 { font-size: 0.95em; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .record-item { background: rgba(255,255,255,0.02); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 10px; border-left: 3px solid var(--primary); }
+    .record-item h4 { font-size: 0.92em; color: var(--accent); margin-bottom: 6px; }
+    .record-item p { font-size: 0.85em; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px; }
+    .record-meta { font-size: 0.78em; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 6px; }
+{% endblock %}
+
+{% block content %}
+<!-- Welcome -->
+<div class="pd-welcome">
+    <div>
+        <h2>Hello, {{ patient_name }}!</h2>
+        <p>Welcome to your secure healthcare dashboard. All your records are encrypted and private.</p>
+    </div>
+    <div style="text-align: right;">
+        <div class="pd-id-badge">ID: {{ patient_id }}</div>
+        <div style="margin-top: 8px; font-size: 0.78em; color: var(--success);">● Status: Protected</div>
+    </div>
+</div>
+
+<!-- Overview -->
+<div class="overview-grid">
+    <div class="overview-card">
+        <h3>📊 Health Overview</h3>
+        <div class="overview-stats">
+            <div><div class="os-val" style="color: var(--accent);">{{ prescriptions|length }}</div><div class="os-label">Active Meds</div></div>
+            <div><div class="os-val" style="color: var(--primary-light);">{{ lab_results|length }}</div><div class="os-label">Lab Reports</div></div>
+            <div><div class="os-val" style="color: var(--warning);">{{ appointments|length }}</div><div class="os-label">Appointments</div></div>
+        </div>
+    </div>
+    <div class="overview-card">
+        <h3>⚡ Quick Actions</h3>
+        <div class="quick-actions">
+            <a href="{{ url_for('download_id') }}" class="btn btn-outline">Download ID Card</a>
+            <form action="{{ url_for('request_access') }}" method="POST" style="margin: 0;">
+                <button type="submit" class="btn btn-outline" style="width: 100%;">Request Access</button>
+            </form>
+            <a href="{{ url_for('settings') }}" class="btn btn-outline">Update Info</a>
+            <a href="{{ url_for('help_page') }}" class="btn btn-outline">Help Center</a>
+        </div>
+    </div>
+</div>
+
+<!-- Patient Services -->
+<div class="page-header"><h2>Patient Services</h2></div>
+<div class="pd-services">
+    <a href="#reports" class="pd-service"><span class="svc-icon">📄</span><h4>Medical Reports</h4><p>View your secure diagnostic reports</p></a>
+    <a href="#prescriptions" class="pd-service"><span class="svc-icon">💊</span><h4>My Prescriptions</h4><p>Access active digital prescriptions</p></a>
+    <a href="#appointments" class="pd-service"><span class="svc-icon">📅</span><h4>Book Appointment</h4><p>Schedule a consultation</p></a>
+    <a href="{{ url_for('live_chat') }}" class="pd-service"><span class="svc-icon">💬</span><h4>Support Chat</h4><p>Real-time healthcare assistance</p></a>
+    <a href="{{ url_for('tutorials') }}" class="pd-service"><span class="svc-icon">🎥</span><h4>Video Guides</h4><p>Learn how to use the portal</p></a>
+    <a href="{{ url_for('profile') }}" class="pd-service"><span class="svc-icon">👤</span><h4>My Profile</h4><p>View your personal details</p></a>
+    <a href="{{ url_for('security') }}" class="pd-service"><span class="svc-icon">🛡️</span><h4>Security</h4><p>Manage your account security</p></a>
+    <a href="{{ url_for('help_page') }}" class="pd-service"><span class="svc-icon">📖</span><h4>Help Center</h4><p>Documentation and FAQs</p></a>
+</div>
+
+<!-- Health Records -->
+<div class="page-header"><h2>Health Records Overview</h2></div>
+
+<div class="record-card" id="prescriptions">
+    <h3>💊 My Prescriptions</h3>
+    {% if prescriptions %}
+        {% for p in prescriptions %}
+        <div class="record-item">
+            <h4>{{ p.medication }}</h4>
+            <p><strong>Dosage:</strong> {{ p.dosage }}</p>
+            <p><strong>Instructions:</strong> {{ p.instructions }}</p>
+            <div class="record-meta"><span>Dr. {{ p.doctor }}</span><span class="badge badge-success">Verified</span></div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><p>No active prescriptions found.</p></div>
+    {% endif %}
+</div>
+
+<div class="record-card" id="reports">
+    <h3 style="color: var(--accent);">📄 Medical Reports</h3>
+    {% if reports %}
+        {% for r in reports %}
+        <div class="record-item" style="border-left-color: var(--accent);">
+            <h4>{{ r.diagnosis }}</h4>
+            <p>{{ r.notes }}</p>
+            <div class="record-meta"><span>By: {{ r.doctor }}</span><span class="badge badge-info">AES-256</span></div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><p>No medical reports available.</p></div>
+    {% endif %}
+</div>
+
+<div class="record-card" id="appointments">
+    <h3 style="color: var(--warning);">📅 Upcoming Appointments</h3>
+    {% if appointments %}
+        {% for a in appointments %}
+        <div class="record-item" style="border-left-color: var(--warning);">
+            <h4>{{ a.reason }}</h4>
+            <p><strong>Date:</strong> {{ a.date }}</p>
+            <p><strong>Time:</strong> {{ a.time }}</p>
+            <div class="record-meta"><span>Dr. {{ a.doctor }}</span><span class="badge badge-warning">{{ a.status }}</span></div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg><p>No upcoming appointments.</p></div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Send Secure Email - Secure Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Send Secure Email{% endblock %}
+
+{% block extra_css %}
+    .recipient-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .r-tab { flex: 1; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); cursor: pointer; text-align: center; font-size: 0.88em; font-weight: 500; transition: all 0.2s ease; }
+    .r-tab.active { background: rgba(14, 165, 233, 0.1); border-color: var(--primary); color: var(--primary-light); }
+    .r-tab:hover:not(.active) { border-color: rgba(255,255,255,0.15); }
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Dashboard
+</a>
+
+<div class="page-header">
+    <h2>Send Secure Email</h2>
+    <p>Send encrypted healthcare data via secure email with digital signatures for authenticity.</p>
+</div>
+
+<div class="card">
+    <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Compose Encrypted Email
+    </h3>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Select Recipient Type</label>
+            <div class="recipient-tabs">
+                <div class="r-tab active" onclick="switchRecipientType('doctor')">👨‍⚕️ Doctors</div>
+                <div class="r-tab" onclick="switchRecipientType('patient')">👤 Patients</div>
+            </div>
+        </div>
+
+        <div class="form-group" id="doctor-select-group">
+            <label for="doctor_email">Select Doctor</label>
+            <select id="doctor_email" class="form-select" onchange="updateEmail(this.value)">
+                <option value="">-- Choose a Doctor --</option>
+                {% for username, data in doctors.items() %}
+                    <option value="{{ data.email }}">{{ data.email }} ({{ username }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group" id="patient-select-group" style="display: none;">
+            <label for="patient_email">Select Patient</label>
+            <select id="patient_email" class="form-select" onchange="updateEmail(this.value)">
+                <option value="">-- Choose a Patient --</option>
+                {% for username, data in patients.items() %}
+                    <option value="{{ data.email }}">{{ data.email }} ({{ username }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Recipient Email Address</label>
+            <input type="email" id="email" name="email" placeholder="recipient@example.com" required class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message (Text)</label>
+            <textarea id="message" name="message" placeholder="Type your secure message here..." class="form-textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image_attachment">Image Attachment (Optional)</label>
+            <input type="file" id="image_attachment" name="image_attachment" accept="image/*" class="form-input">
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button type="submit" name="action" value="send_single" class="btn btn-primary" style="flex: 1;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Send Secure
+            </button>
+            <button type="submit" name="action" value="send_all" class="btn btn-outline" style="flex: 1;">Broadcast to All</button>
+        </div>
+    </form>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="output-box">
+            {% for category, message in messages %}
+                {% if category == 'success' %}{{ message }}{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function switchRecipientType(type) {
+        const doctorGroup = document.getElementById('doctor-select-group');
+        const patientGroup = document.getElementById('patient-select-group');
+        const tabs = document.querySelectorAll('.r-tab');
+        if (type === 'doctor') {
+            doctorGroup.style.display = 'block';
+            patientGroup.style.display = 'none';
+            tabs[0].classList.add('active');
+            tabs[1].classList.remove('active');
+        } else {
+            doctorGroup.style.display = 'none';
+            patientGroup.style.display = 'block';
+            tabs[0].classList.remove('active');
+            tabs[1].classList.add('active');
+        }
+    }
+    function updateEmail(val) {
+        if (val) document.getElementById('email').value = val;
+    }
+</script>
+{% endblock %}

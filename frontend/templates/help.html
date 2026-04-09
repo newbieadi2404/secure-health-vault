@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation & Help - Secure Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Documentation{% endblock %}
+
+{% block extra_css %}
+    .doc-section { margin-bottom: 40px; }
+    .doc-section-title { font-size: 1.1em; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+    .doc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; transition: all 0.25s ease; }
+    .doc-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-2px); }
+    .doc-card h4 { font-size: 0.92em; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+    .doc-card p { font-size: 0.85em; color: var(--text-muted); line-height: 1.6; }
+    .doc-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.68em; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+    .doc-badge.doctor { background: rgba(14, 165, 233, 0.15); color: var(--primary-light); }
+    .doc-badge.admin { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+    .faq-item { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 18px; border-radius: var(--radius-md); margin-bottom: 12px; }
+    .faq-item h4 { font-size: 0.92em; color: var(--primary-light); margin-bottom: 8px; }
+    .faq-item p { font-size: 0.85em; color: var(--text-muted); line-height: 1.6; }
+    .help-cta { text-align: center; background: rgba(14, 165, 233, 0.06); padding: 36px; border-radius: var(--radius-xl); border: 1px solid rgba(14, 165, 233, 0.12); }
+    .help-cta h3 { margin-bottom: 10px; }
+    .help-cta p { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9em; }
+    .help-cta-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Dashboard
+</a>
+
+<div class="page-header">
+    <h2>Documentation & Help</h2>
+    <p>Comprehensive guide to the Secure Healthcare Crypto System features and security protocols.</p>
+</div>
+
+<div class="doc-section">
+    <h3 class="doc-section-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;color:var(--primary-light)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        Clinical Services
+    </h3>
+    <div class="doc-grid">
+        <div class="doc-card"><span class="doc-badge doctor">Doctor</span><h4>💊 Prescriptions</h4><p>Issue secure digital prescriptions. Medication data is stored in the encrypted clinical vault with doctor authentication.</p></div>
+        <div class="doc-card"><span class="doc-badge doctor">Doctor</span><h4>📄 Medical Reports</h4><p>Access and create detailed patient medical reports. Each report is timestamped and secured using hybrid AES-GCM encryption.</p></div>
+        <div class="doc-card"><span class="doc-badge doctor">Doctor</span><h4>🖼️ Image Encryption</h4><p>Encrypt medical images (X-rays, MRIs). Generates a "Cipher Image" payload for secure transmission.</p></div>
+        <div class="doc-card"><span class="doc-badge doctor">Doctor</span><h4>📧 Secure Email</h4><p>Send and receive encrypted data. Uses RSA-2048 keys for wrapping and digital signatures for origin verification.</p></div>
+    </div>
+</div>
+
+<div class="doc-section">
+    <h3 class="doc-section-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;color:var(--purple)"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"/></svg>
+        Administrative Tools
+    </h3>
+    <div class="doc-grid">
+        <div class="doc-card"><span class="doc-badge admin">Admin Only</span><h4>🔒 Hybrid Encryption</h4><p>Direct interface for encrypting raw healthcare records. Combines AES for speed and RSA for secure key management.</p></div>
+        <div class="doc-card"><span class="doc-badge admin">Admin Only</span><h4>📊 Audit Log Verification</h4><p>Verifies integrity of hash-chained audit logs. Detects unauthorized modifications to event history.</p></div>
+        <div class="doc-card"><span class="doc-badge admin">Admin Only</span><h4>📈 System Status</h4><p>Real-time monitoring of encryption keys, payload counts, and overall cryptographic health.</p></div>
+    </div>
+</div>
+
+<div class="doc-section">
+    <h3 class="doc-section-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;color:var(--warning)"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        FAQ
+    </h3>
+    <div class="faq-item"><h4>How secure is my data?</h4><p>We use AES-256 in GCM mode, providing both encryption and authenticity. Keys are never stored in plaintext and are protected using RSA-2048.</p></div>
+    <div class="faq-item"><h4>What is the "Cipher Image"?</h4><p>It is an encrypted binary version of a medical image. It looks like random data without the correct RSA private key.</p></div>
+    <div class="faq-item"><h4>Can I reset my password?</h4><p>Yes, use the "Forgot Password" link on the login page. A reset link will be sent to your registered email.</p></div>
+</div>
+
+<div class="help-cta">
+    <h3>Still need help?</h3>
+    <p>Our support team is available for real-time assistance.</p>
+    <div class="help-cta-actions">
+        <a href="{{ url_for('tutorials') }}" class="btn btn-primary">🎥 Video Tutorials</a>
+        <a href="{{ url_for('live_chat') }}" class="btn btn-accent">💬 Live Chat</a>
+        <a href="{{ url_for('contact_support') }}" class="btn btn-outline">📧 Contact Support</a>
+    </div>
+</div>
+{% endblock %}

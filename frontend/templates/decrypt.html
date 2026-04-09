@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Decrypt Data - Secure Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Decrypt Data{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Dashboard
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h2>Decrypt Healthcare Data</h2>
+        <p>Decrypt encrypted patient records with role-based access control using hybrid RSA-AES decryption.</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Role-Based Decryption
+    </h3>
+    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px;">Different roles have different access levels. Select your role to decrypt data accordingly.</p>
+    <div class="feature-grid">
+        <div class="feature-item"><span class="fi-icon">👨‍⚕️</span> Doctor – Full access to all fields</div>
+        <div class="feature-item"><span class="fi-icon">👩‍⚕️</span> Nurse – Limited access</div>
+        <div class="feature-item"><span class="fi-icon">👨‍💻</span> Admin – Audit information only</div>
+        <div class="feature-item"><span class="fi-icon">🏥</span> Patient – Own records only</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+        Select Role & Decrypt
+    </h3>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group" style="margin-bottom: 20px; border: 1px dashed rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+            <label for="payload_file" style="display: block; margin-bottom: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload Payload File (Optional)
+            </label>
+            <input type="file" id="payload_file" name="payload_file" class="form-control" accept=".json">
+            <small style="color: var(--text-muted); display: block; margin-top: 5px;">Upload a <code>secure_payload.json</code> file to decrypt it. If empty, the existing system payload will be used.</small>
+        </div>
+        <div class="form-group">
+            <label for="role">Decryption Role</label>
+            <select id="role" name="role" class="form-select" required>
+                <option value="" disabled selected>Choose your role</option>
+                <option value="doctor">Doctor – Full Decryption</option>
+                <option value="nurse">Nurse – Limited Decryption</option>
+                <option value="admin">Admin – Audit Only</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="max-width: 320px; margin: 12px auto 0; display: flex;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+            Decrypt Data
+        </button>
+    </form>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="output-box" style="margin-top: 20px;">
+            {% for category, message in messages %}
+                <div class="message {{ category }}" style="white-space: pre-wrap; padding: 12px; border-radius: 6px; background: rgba(0,0,0,0.25); margin-bottom: 12px; border-left: 4px solid {% if category == 'success' %}#10b981{% else %}#fb7185{% endif %}; line-height: 1.6;">
+                    <strong style="display: block; margin-bottom: 6px; color: {% if category == 'success' %}#10b981{% else %}#fb7185{% endif %}; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.05em;">
+                        {% if category == 'success' %}✓ Decryption Successful{% else %}⚠ Decryption Error / Tampering Detected{% endif %}
+                    </strong>
+                    <code style="color: var(--text-secondary); font-family: 'Consolas', 'Monaco', monospace; font-size: 0.95em;">{{ message }}</code>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+{% endblock %}

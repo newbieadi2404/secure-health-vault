@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard – Secure Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+    /* ═══ DASHBOARD-SPECIFIC STYLES ═══ */
+    .welcome-banner {
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(6, 214, 160, 0.05));
+        border: 1px solid rgba(14, 165, 233, 0.12);
+        border-radius: var(--radius-xl);
+        padding: 32px;
+        margin-bottom: 28px;
+    }
+    .welcome-banner h2 { font-size: 1.5em; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .welcome-banner p { color: var(--text-secondary); font-size: 0.92em; line-height: 1.6; max-width: 600px; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; text-align: center; transition: all 0.2s ease; }
+    .stat-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    .stat-label { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+    .stat-value { font-size: 1.5em; font-weight: 800; letter-spacing: -0.5px; }
+    .stat-value.blue { color: var(--primary-light); }
+    .stat-value.green { color: var(--accent); }
+    .stat-value.amber { color: var(--warning); }
+    .stat-value.purple { color: var(--purple); }
+    .stat-sub { font-size: 0.72em; color: var(--text-muted); margin-top: 4px; }
+
+    .section-head { margin-bottom: 16px; }
+    .section-head h3 { font-size: 0.92em; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+    .section-head h3 svg { width: 18px; height: 18px; color: var(--primary-light); }
+
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-bottom: 36px; }
+    .service-card {
+        background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);
+        padding: 24px; text-decoration: none; color: inherit; transition: all 0.25s ease;
+        display: flex; flex-direction: column; align-items: flex-start;
+        height: 100%;
+    }
+    .service-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+    .service-card-icon { width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 1.5em; flex-shrink: 0; }
+    .service-card-icon.blue { background: rgba(14, 165, 233, 0.12); color: var(--primary-light); }
+    .service-card-icon.green { background: rgba(6, 214, 160, 0.12); color: var(--accent); }
+    .service-card-icon.amber { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
+    .service-card-icon.purple { background: rgba(139, 92, 246, 0.12); color: var(--purple); }
+    .service-card-icon.red { background: rgba(244, 63, 94, 0.12); color: var(--danger); }
+    .service-card h4 { font-size: 1em; font-weight: 700; margin-bottom: 8px; color: white; letter-spacing: -0.2px; }
+    .service-card p { font-size: 0.82em; color: var(--text-secondary); line-height: 1.6; flex: 1; margin-bottom: 16px; }
+    .service-card .card-arrow { font-size: 0.78em; color: var(--primary-light); font-weight: 600; display: flex; align-items: center; gap: 4px; transition: all 0.25s ease; margin-top: auto; }
+    .service-card:hover .card-arrow { gap: 8px; }
+
+    .help-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-bottom: 40px; }
+    .help-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 18px; text-decoration: none; color: inherit; transition: all 0.25s ease; display: flex; align-items: center; gap: 14px; }
+    .help-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateX(4px); }
+    .help-card-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); background: rgba(14, 165, 233, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2em; flex-shrink: 0; }
+    .help-card-text h4 { font-size: 0.88em; font-weight: 600; color: white; margin-bottom: 3px; }
+    .help-card-text p { font-size: 0.76em; color: var(--text-muted); }
+
+    @media (max-width: 1024px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .stats-row { grid-template-columns: 1fr; } .services-grid { grid-template-columns: 1fr; } }
+{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+    <h2>Welcome to HealthCrypto</h2>
+    <p>Hybrid RSA-AES encryption platform for secure healthcare data management with cryptographic role-based access control and real-time tamper detection.</p>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Encryption</div><div class="stat-value blue">AES-256</div><div class="stat-sub">GCM authenticated</div></div>
+    <div class="stat-card"><div class="stat-label">Key Exchange</div><div class="stat-value green">RSA-2048</div><div class="stat-sub">Envelope encryption</div></div>
+    <div class="stat-card"><div class="stat-label">Access Control</div><div class="stat-value amber">RBAC</div><div class="stat-sub">4 role levels</div></div>
+    <div class="stat-card"><div class="stat-label">Integrity</div><div class="stat-value purple">SHA-256</div><div class="stat-sub">Hash-chain audit</div></div>
+</div>
+
+<!-- Services -->
+<div class="section-head">
+    <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Services
+    </h3>
+</div>
+
+<div class="services-grid">
+    <a href="{{ url_for('lab_results') }}" class="service-card"><div class="service-card-icon blue">🧪</div><h4>Lab Results</h4><p>View and manage patient lab test results and medical reports</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('prescriptions') }}" class="service-card"><div class="service-card-icon green">💊</div><h4>Prescriptions</h4><p>Issue and manage digital prescriptions securely</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('medical_reports') }}" class="service-card"><div class="service-card-icon blue">📄</div><h4>Medical Reports</h4><p>Access patient medical histories and records</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('appointments') }}" class="service-card"><div class="service-card-icon amber">📅</div><h4>Appointments</h4><p>Manage patient consultations and schedules</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('patient_records') }}" class="service-card"><div class="service-card-icon green">📋</div><h4>Patient Records</h4><p>Access unified patient clinical and demographic data</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('encrypt_image') }}" class="service-card"><div class="service-card-icon purple">🔒</div><h4>Image Encryption</h4><p>Encrypt medical images using hybrid RSA-AES</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('decrypt_image') }}" class="service-card"><div class="service-card-icon blue">🔓</div><h4>Image Decryption</h4><p>Decrypt and restore original medical images</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    {% if session.get('role') == 'admin' %}
+    <a href="{{ url_for('admin_dashboard') }}" class="service-card"><div class="service-card-icon red">🕵️</div><h4>Admin Dashboard</h4><p>Comprehensive monitoring of every activity and security event in the system</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('encrypt') }}" class="service-card"><div class="service-card-icon purple">🔐</div><h4>Encrypt Data</h4><p>Encrypt healthcare records using AES-256-GCM + RSA-2048</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('decrypt') }}" class="service-card"><div class="service-card-icon green">🗝️</div><h4>Decrypt Data</h4><p>Decrypt with RBAC role-based access control</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    {% endif %}
+    <a href="{{ url_for('send_email') }}" class="service-card"><div class="service-card-icon amber">✉️</div><h4>Send Secure Email</h4><p>Send encrypted data via secure email with signatures</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('receive_email') }}" class="service-card"><div class="service-card-icon blue">📥</div><h4>Receive Payload</h4><p>Decrypt secure email payloads with RSA verification</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    {% if session.get('role') == 'admin' %}
+    <a href="{{ url_for('verify_audit') }}" class="service-card"><div class="service-card-icon green">🛡️</div><h4>Audit Log</h4><p>Verify integrity of hash-chained audit logs</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('tamper_test') }}" class="service-card"><div class="service-card-icon red">⚠️</div><h4>Tamper Testing</h4><p>Red team payload and audit tampering detection</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    <a href="{{ url_for('status') }}" class="service-card"><div class="service-card-icon amber">📈</div><h4>System Status</h4><p>Check keys, payloads, and real-time system state</p><div class="card-arrow">Open Service <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></a>
+    {% endif %}
+</div>
+
+<!-- Help & Support -->
+<div class="section-head">
+    <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help & Support
+    </h3>
+</div>
+
+<div class="help-grid">
+    <a href="{{ url_for('help_page') }}" class="help-card"><div class="help-card-icon">📖</div><div class="help-card-text"><h4>Documentation</h4><p>Comprehensive guides and references</p></div></a>
+    <a href="{{ url_for('tutorials') }}" class="help-card"><div class="help-card-icon">🎥</div><div class="help-card-text"><h4>Video Tutorials</h4><p>Step-by-step video walkthroughs</p></div></a>
+    <a href="{{ url_for('live_chat') }}" class="help-card"><div class="help-card-icon">💬</div><div class="help-card-text"><h4>Live Chat</h4><p>Real-time support assistance</p></div></a>
+    <a href="{{ url_for('contact_support') }}" class="help-card"><div class="help-card-icon">📧</div><div class="help-card-text"><h4>Contact Support</h4><p>Get in touch with our team</p></div></a>
+</div>
+{% endblock %}

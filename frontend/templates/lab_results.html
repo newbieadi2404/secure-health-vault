@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Lab Results - Healthcare Crypto System{% endblock %}
+{% block topbar_title %}Lab Results{% endblock %}
+
+{% block extra_css %}
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .summary-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; text-align: center; }
+    .summary-item .s-label { display: block; font-size: 0.75em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .summary-item .s-val { font-size: 1.6em; font-weight: 800; }
+    .filter-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px; }
+    .filter-bar .form-group { flex: 1; min-width: 160px; margin-bottom: 0; }
+    .filter-bar button { height: 44px; }
+    .status-normal { background: rgba(16, 185, 129, 0.12); color: #34d399; }
+    .status-abnormal { background: rgba(244, 63, 94, 0.12); color: #fb7185; }
+    .status-pending { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 2000; justify-content: center; align-items: center; }
+    .modal-box { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 28px; max-width: 700px; width: 90%; max-height: 85vh; overflow-y: auto; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .modal-head h3 { font-size: 1.1em; color: var(--primary-light); }
+    .modal-close { width: 32px; height: 32px; border-radius: 50%; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.2); color: #fb7185; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .modal-close:hover { background: var(--danger); color: white; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .detail-item { background: rgba(0,0,0,0.2); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+    .detail-item.full { grid-column: 1 / -1; }
+    .d-label { display: block; font-size: 0.75em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .d-value { font-size: 0.95em; font-weight: 500; color: var(--text-primary); }
+    .results-code { background: rgba(0,0,0,0.4); padding: 16px; border-radius: var(--radius-sm); border-left: 3px solid var(--primary); margin-top: 14px; font-family: monospace; color: var(--text-primary); line-height: 1.7; }
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Dashboard
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h2>Lab Results</h2>
+        <p>View and manage encrypted laboratory test results.</p>
+    </div>
+    <div class="page-header-actions">
+        <span class="badge badge-info">📍 {{ session.get('hospital', {}).get('name', 'No Hospital Selected') }}</span>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="summary-grid">
+    <div class="summary-item"><span class="s-label">Total Results</span><span class="s-val" style="color: var(--primary-light);">{{ lab_results|length }}</span></div>
+    <div class="summary-item"><span class="s-label">Normal</span><span class="s-val" style="color: #34d399;">{{ lab_results|selectattr('status', 'equalto', 'Normal')|list|length }}</span></div>
+    <div class="summary-item"><span class="s-label">Abnormal</span><span class="s-val" style="color: #fb7185;">{{ lab_results|selectattr('status', 'equalto', 'Abnormal')|list|length }}</span></div>
+    <div class="summary-item"><span class="s-label">Pending</span><span class="s-val" style="color: #fbbf24;">{{ lab_results|selectattr('status', 'equalto', 'Pending')|list|length }}</span></div>
+</div>
+
+<!-- Filters -->
+<div class="card">
+    <form method="GET" action="{{ url_for('lab_results') }}">
+        <div class="filter-bar">
+            <div class="form-group">
+                <label>Patient ID</label>
+                <input type="text" name="patient_id" placeholder="Enter Patient ID" value="{{ request.args.get('patient_id', '') }}" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Test Type</label>
+                <select name="test_type" class="form-select">
+                    <option value="">All Tests</option>
+                    <option value="Blood Test" {% if request.args.get('test_type') == 'Blood Test' %}selected{% endif %}>Blood Test</option>
+                    <option value="Urinalysis" {% if request.args.get('test_type') == 'Urinalysis' %}selected{% endif %}>Urinalysis</option>
+                    <option value="X-Ray" {% if request.args.get('test_type') == 'X-Ray' %}selected{% endif %}>X-Ray</option>
+                    <option value="MRI" {% if request.args.get('test_type') == 'MRI' %}selected{% endif %}>MRI</option>
+                    <option value="CT Scan" {% if request.args.get('test_type') == 'CT Scan' %}selected{% endif %}>CT Scan</option>
+                    <option value="ECG" {% if request.args.get('test_type') == 'ECG' %}selected{% endif %}>ECG</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="form-select">
+                    <option value="">All Status</option>
+                    <option value="Normal" {% if request.args.get('status') == 'Normal' %}selected{% endif %}>Normal</option>
+                    <option value="Abnormal" {% if request.args.get('status') == 'Abnormal' %}selected{% endif %}>Abnormal</option>
+                    <option value="Pending" {% if request.args.get('status') == 'Pending' %}selected{% endif %}>Pending</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <button type="button" class="btn btn-accent" onclick="openModal()">+ Add Result</button>
+        </div>
+    </form>
+</div>
+
+<!-- Results Table -->
+<div class="card">
+    <div style="overflow-x: auto;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Patient ID</th><th>Patient Name</th><th>Test Type</th><th>Date</th><th>Status</th><th>Results</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in lab_results %}
+                <tr>
+                    <td style="font-family: monospace; color: var(--primary-light);">{{ result.patient_id }}</td>
+                    <td style="color: var(--text-primary); font-weight: 500;">{{ result.patient_name }}</td>
+                    <td>{{ result.test_type }}</td>
+                    <td>{{ result.date }}</td>
+                    <td><span class="badge status-{{ result.status.lower() }}">{{ result.status }}</span></td>
+                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ result.results }}</td>
+                    <td>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.78em;" onclick="viewResult({{ result.id }})">View</button>
+                            <a href="{{ url_for('download_lab_report', result_id=result.id) }}" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.78em;">Download</a>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">No lab results found. Try adjusting your filters.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- View Result Modal -->
+<div class="modal-overlay" id="viewModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3>Lab Report Details</h3>
+            <button class="modal-close" onclick="closeViewModal()">✕</button>
+        </div>
+        <div id="reportContent"></div>
+        <div style="display: flex; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <button class="btn btn-primary" style="flex: 1;" onclick="window.print()">Print Report</button>
+            <button class="btn btn-accent" style="flex: 1;" onclick="downloadReport()">Download PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Result Modal -->
+<div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3>Add Lab Result</h3>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <form method="POST" action="{{ url_for('lab_results') }}">
+            <div class="form-group"><label>Patient ID</label><input type="text" name="patient_id" required class="form-input"></div>
+            <div class="form-group"><label>Patient Name</label><input type="text" name="patient_name" required class="form-input"></div>
+            <div class="form-group"><label>Test Type</label>
+                <select name="test_type" required class="form-select">
+                    <option value="">Select Test Type</option>
+                    <option value="Blood Test">Blood Test</option><option value="Urinalysis">Urinalysis</option>
+                    <option value="X-Ray">X-Ray</option><option value="MRI">MRI</option>
+                    <option value="CT Scan">CT Scan</option><option value="ECG">ECG</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Results</label><input type="text" name="results" placeholder="e.g., Hemoglobin: 14.5 g/dL" required class="form-input"></div>
+            <div class="form-group"><label>Status</label>
+                <select name="status" required class="form-select"><option value="Pending">Pending</option><option value="Normal">Normal</option><option value="Abnormal">Abnormal</option></select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Save Result</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const labResults = {{ lab_results|tojson }};
+
+    function openModal() { document.getElementById('addModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('addModal').style.display = 'none'; }
+    function closeViewModal() { document.getElementById('viewModal').style.display = 'none'; }
+
+    function viewResult(id) {
+        const r = labResults.find(x => x.id == id);
+        if (!r) return;
+        const sc = r.status.toLowerCase();
+        const sColor = sc === 'normal' ? '#34d399' : sc === 'abnormal' ? '#fb7185' : '#fbbf24';
+        document.getElementById('reportContent').innerHTML = `
+            <div class="detail-grid">
+                <div class="detail-item"><span class="d-label">Patient ID</span><span class="d-value">${r.patient_id}</span></div>
+                <div class="detail-item"><span class="d-label">Patient Name</span><span class="d-value">${r.patient_name}</span></div>
+                <div class="detail-item"><span class="d-label">Test Type</span><span class="d-value">${r.test_type}</span></div>
+                <div class="detail-item"><span class="d-label">Test Date</span><span class="d-value">${r.date}</span></div>
+                <div class="detail-item"><span class="d-label">Hospital</span><span class="d-value">${r.hospital || 'N/A'}</span></div>
+                <div class="detail-item"><span class="d-label">Physician</span><span class="d-value">${r.doctor || 'N/A'}</span></div>
+                <div class="detail-item full"><span class="d-label">Status</span><span class="d-value" style="color:${sColor};font-size:1.2em;">● ${r.status}</span></div>
+            </div>
+            <div class="results-code"><strong style="color:var(--primary-light);">Test Results</strong><br>${r.results}</div>
+            <div style="margin-top:14px;padding:12px;background:rgba(14,165,233,0.06);border-radius:var(--radius-sm);border:1px solid rgba(14,165,233,0.15);font-size:0.82em;color:var(--text-muted);">
+                <strong style="color:var(--primary-light);">Report ID:</strong> LR-${String(r.id).padStart(6,'0')}<br>
+                <strong style="color:var(--primary-light);">Generated:</strong> ${new Date().toLocaleString()}<br>
+                <strong style="color:var(--primary-light);">Verified By:</strong> Healthcare Crypto System
+            </div>`;
+        document.getElementById('viewModal').style.display = 'flex';
+    }
+
+    function downloadReport() { alert('PDF generation is available in production builds.'); }
+
+    window.onclick = function(e) {
+        if (e.target === document.getElementById('addModal')) closeModal();
+        if (e.target === document.getElementById('viewModal')) closeViewModal();
+    }
+</script>
+{% endblock %}
